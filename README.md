@@ -16,7 +16,7 @@
    
 ## Wprowadzenie
 
-Filmweb Database to aplikacja webowa stworzona przy użyciu Spring Boot, która symuluje funkcjonalności popularnego serwisu Filmweb. Aplikacja pozwala na przeglądanie, wyszukiwanie i zarządzanie bazą danych filmów, aktorów i reżyserów.
+FilmWebClone to aplikacja webowa stworzona przy użyciu Spring Boot, która symuluje funkcjonalności popularnego serwisu Filmweb. Aplikacja pozwala na przeglądanie, wyszukiwanie i zarządzanie bazą danych filmów, aktorów i reżyserów.
 
 ## Funkcjonalności
 
@@ -44,6 +44,7 @@ Filmweb Database to aplikacja webowa stworzona przy użyciu Spring Boot, która 
    cd FilmWebClone
    ```
 3. Skonfiguruj połączenie z bazą danych w pliku `src/main/resources/application.properties`:
+   MySQL databaza jest wymagana.
    ```
    spring.datasource.url=jdbc:mysql://localhost:3306/filmweb_db
    spring.datasource.username=twoj_username
@@ -55,7 +56,6 @@ Filmweb Database to aplikacja webowa stworzona przy użyciu Spring Boot, która 
    ```
 
 ## Uruchomienie aplikacji
-
 1. Uruchom aplikację za pomocą Maven:
    ```
    mvn spring-boot:run
@@ -103,5 +103,5 @@ Dostęp do panelu administratora: `http://localhost:8080/admin`
 
 W panelu administratora możesz:
 1. Dodawać nowe filmy
-2. Edytować istniejące filmy
+2. Edytować istniejące filmy wraz z Aktorami i reżyserami. 
 3. Usuwać filmy
