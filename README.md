@@ -1,4 +1,4 @@
-# Filmweb Simulation - Baza danych filmów
+# FilmWebClone - Baza danych filmów
 
 ## Spis treści
 1. [Wprowadzenie](#wprowadzenie)
