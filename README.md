@@ -37,11 +37,11 @@ Filmweb Database to aplikacja webowa stworzona przy użyciu Spring Boot, która 
 
 1. Sklonuj repozytorium:
    ```
-   git clone https://github.com/karol/filmweb-database.git
+   git clone https://github.com/Karollo999/FilmWebClone.git
    ```
 2. Przejdź do katalogu projektu:
    ```
-   cd filmweb-database
+   cd FilmWebClone
    ```
 3. Skonfiguruj połączenie z bazą danych w pliku `src/main/resources/application.properties`:
    ```
