@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Wyniki wyszukiwania</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Wyniki wyszukiwania</h2>
+
+        <h3>Filmy</h3>
+        <ul th:if="${not #lists.isEmpty(movies)}">
+            <li th:each="movie : ${movies}">
+                <a th:href="@{/movie/{id}(id=${movie.id})}" th:text="${movie.title}"></a>
+                - <span th:text="${movie.length}"></span> minut
+                - <span th:text="${movie.movieType != null ? movie.movieType.typeName : 'Nieznany gatunek'}"></span>
+            </li>
+        </ul>
+        <p th:if="${#lists.isEmpty(movies)}">Nie znaleziono filmów.</p>
+
+        <h3>Aktorzy</h3>
+        <ul th:if="${not #lists.isEmpty(actors)}">
+            <li th:each="actor : ${actors}">
+                <a th:href="@{/actor/{id}(id=${actor.id})}" th:text="${actor.firstName + ' ' + actor.lastName}"></a>
+                - Urodzony: <span th:text="${#temporals.format(actor.birthDate, 'dd MMMM yyyy')}"></span>
+            </li>
+        </ul>
+        <p th:if="${#lists.isEmpty(actors)}">Nie znaleziono aktorów.</p>
+
+        <h3>Reżyserzy</h3>
+        <ul th:if="${not #lists.isEmpty(directors)}">
+            <li th:each="director : ${directors}">
+                <a th:href="@{/director/{id}(id=${director.id})}" th:text="${director.firstName + ' ' + director.lastName}"></a>
+                - Urodzony: <span th:text="${#temporals.format(director.birthDate, 'dd MMMM yyyy')}"></span>
+            </li>
+        </ul>
+        <p th:if="${#lists.isEmpty(directors)}">Nie znaleziono reżyserów.</p>
+
+        <a href="/search" class="btn btn-primary mt-3">Nowe wyszukiwanie</a>
+    </div>
+</body>
+</html>

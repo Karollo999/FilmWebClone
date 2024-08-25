@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Wyszukaj</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Wyszukaj Filmy, Aktorów i Reżyserów</h2>
+        <form action="#" th:action="@{/search}" method="post">
+            <div class="form-group">
+                <label for="query">Zapytanie wyszukiwania:</label>
+                <input type="text" class="form-control" id="query" name="query" placeholder="Wpisz nazwę, tytuł itp.">
+            </div>
+            <div class="form-group">
+                <label for="minLength">Minimalna długość filmu:</label>
+                <input type="number" class="form-control" id="minLength" name="minLength" placeholder="Wpisz minimalną długość w minutach">
+            </div>
+            <div class="form-group">
+                <label for="maxLength">Maksymalna długość filmu:</label>
+                <input type="number" class="form-control" id="maxLength" name="maxLength" placeholder="Wpisz maksymalną długość w minutach">
+            </div>
+            <div class="form-group">
+                <label for="genre">Gatunek:</label>
+                <input type="text" class="form-control" id="genre" name="genre" placeholder="Wpisz gatunek">
+            </div>
+            <div class="form-group">
+                <label for="birthDate">Data urodzenia:</label>
+                <input type="date" class="form-control" id="birthDate" name="birthDate">
+            </div>
+            <button type="submit" class="btn btn-primary">Szukaj</button>
+        </form>
+    </div>
+</body>
+</html>

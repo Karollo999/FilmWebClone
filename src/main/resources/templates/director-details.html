@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Szczegóły Reżysera</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 th:text="${director.firstName + ' ' + director.lastName}"></h2>
+        <p><strong>Data urodzenia:</strong> <span th:text="${#temporals.format(director.birthDate, 'dd MMMM yyyy')}"></span></p>
+        <p><strong>Narodowość:</strong> <span th:text="${director.nationality}"></span></p>
+        <h3>Biografia</h3>
+        <p th:text="${director.biography}"></p>
+        <h3>Filmy</h3>
+        <ul>
+            <li th:each="movie : ${director.movies}">
+                <a th:href="@{/movie/{id}(id=${movie.id})}" th:text="${movie.title}"></a>
+            </li>
+        </ul>
+        <div class="mt-3">
+            <a href="/" class="btn btn-primary">Powrót do Listy Filmów</a>
+            <a href="javascript:history.back()" class="btn btn-secondary ml-2">Powrót do Poprzedniej Strony</a>
+        </div>
+    </div>
+</body>
+</html>

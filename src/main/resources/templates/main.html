@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Baza danych filmów</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Baza danych filmów</h2>
+        <a href="/search" class="btn btn-primary mb-3">Szukaj filmów, aktorów i reżyserów</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tytuł</th>
+                    <th>Długość (minuty)</th>
+                    <th>Reżyser</th>
+                    <th>Typ</th>
+                    <th>Aktorzy</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="movie : ${movies}">
+                    <td th:text="${movie.title}"></td>
+                    <td th:text="${movie.length}"></td>
+                    <td>
+                        <a th:if="${movie.director != null && movie.director.firstName != 'Unknown'}"
+                           th:href="@{/director/{id}(id=${movie.director.id})}"
+                           th:text="${movie.director.firstName + ' ' + movie.director.lastName}"></a>
+                        <span th:unless="${movie.director != null && movie.director.firstName != 'Unknown'}"
+                              th:text="${movie.director != null ? movie.director.firstName + ' ' + movie.director.lastName : 'Nieznany'}"></span>
+                    </td>
+                    <td th:text="${movie.movieType != null ? movie.movieType.typeName : 'Nieznany'}"></td>
+                    <td>
+                        <span th:if="${movie.actors != null && !movie.actors.empty}">
+                            <span th:each="actor, iterStat : ${movie.actors}">
+                                <a th:if="${actor != null && actor.firstName != 'Unknown'}"
+                                   th:href="@{/actor/{id}(id=${actor.id})}"
+                                   th:text="${actor.firstName + ' ' + actor.lastName}"></a>
+                                <span th:unless="${actor != null && actor.firstName != 'Unknown'}"
+                                      th:text="${actor != null ? actor.firstName + ' ' + actor.lastName : 'Nieznany'}"></span>
+                                <span th:if="${!iterStat.last}">, </span>
+                            </span>
+                        </span>
+                        <span th:if="${movie.actors == null || movie.actors.empty}">Nieznani</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${actor.firstName + ' ' + actor.lastName}">Szczegóły Aktora</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 th:text="${actor.firstName + ' ' + actor.lastName}">Imię i Nazwisko Aktora</h1>
+        <p><strong>Data urodzenia:</strong> <span th:text="${actor.birthDate}"></span></p>
+        <h3>Filmy:</h3>
+        <ul>
+            <li th:each="movie : ${actor.movies}">
+                <a th:href="@{/movie/{id}(id=${movie.id})}" th:text="${movie.title}"></a>
+            </li>
+        </ul>
+        <a href="javascript:history.back()" class="btn btn-primary mt-3">Powrót</a>
+    </div>
+</body>
+</html>

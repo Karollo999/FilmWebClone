@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${movie.title}">Szczegóły filmu</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 th:text="${movie.title}">Tytuł filmu</h1>
+        <div class="row">
+            <div class="col-md-8">
+                <p><strong>Długość:</strong> <span th:text="${movie.length}"></span> minut</p>
+                <p><strong>Reżyser:</strong>
+                    <a th:if="${movie.director != null}"
+                       th:href="@{/director/{id}(id=${movie.director.id})}"
+                       th:text="${movie.director.firstName + ' ' + movie.director.lastName}"></a>
+                    <span th:unless="${movie.director != null}">Nieznany</span>
+                </p>
+                <p><strong>Gatunek:</strong> <span th:text="${movie.movieType != null ? movie.movieType.typeName : 'Nieznany'}"></span></p>
+                <h3>Aktorzy:</h3>
+                <ul>
+                    <li th:each="actor : ${movie.actors}">
+                        <a th:href="@{/actor/{id}(id=${actor.id})}"
+                           th:text="${actor.firstName + ' ' + actor.lastName}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <a href="javascript:history.back()" class="btn btn-primary mt-3">Powrót do wyników wyszukiwania</a>
+    </div>
+</body>
+</html>

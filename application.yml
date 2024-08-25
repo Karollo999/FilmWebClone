@@ -1,0 +1,22 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:mysql://localhost:4578/filmweb
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update # Automatically updates the database schema
+    show-sql: true # Show SQL queries in the console
+    properties:
+      hibernate:
+        format_sql: true
+
+    database-platform:  org.hibernate.dialect.MySQLDialect
+    
+    
+server:
+  port: 8080 # The port on which the application will run
