@@ -145,4 +145,43 @@ public class MovieDatabaseController {
         movieService.deleteMovie(id);
         return "redirect:/admin";
     }
+	
+	@GetMapping("/admin/actors")
+	public String showActorsList(Model model) {
+		model.addAttribute("actors", actorService.getAllActors());
+		return "admin-actors";
+	}
+
+	@GetMapping("/admin/add-actor")
+	public String showAddActorForm(Model model) {
+		model.addAttribute("actor", new Actor());
+		return "add-actor";
+	}
+
+	@PostMapping("/admin/add-actor")
+	public String addActor(@ModelAttribute Actor actor) {
+		actorService.saveActor(actor);
+		return "redirect:/admin/actors";
+	}
+	
+	@GetMapping("/admin/edit-actor/{id}")
+	public String showEditActorForm(@PathVariable Long id, Model model) {
+		Actor actor = actorService.getActorById(id)
+				.orElseThrow(() -> new RuntimeException("Actor not found"));
+		model.addAttribute("actor", actor);
+		return "edit-actor";
+	}
+
+	@PostMapping("/admin/edit-actor/{id}")
+	public String editActor(@PathVariable Long id, @ModelAttribute Actor actor) {
+		actorService.updateActor(id, actor);
+		return "redirect:/admin/actors";
+	}
+
+	@GetMapping("/admin/delete-actor/{id}")
+	public String deleteActor(@PathVariable Long id) {
+		actorService.deleteActor(id);
+		return "redirect:/admin/actors";
+	}
+		
 }

@@ -95,4 +95,5 @@ class MovieDatabaseControllerTest {
                 .andExpect(view().name("search-results"))
                 .andExpect(model().attributeExists("movies"));
     }
+	
 }
