@@ -183,5 +183,44 @@ public class MovieDatabaseController {
 		actorService.deleteActor(id);
 		return "redirect:/admin/actors";
 	}
+	
+	@GetMapping("/admin/directors")
+	public String showDirectorsList(Model model) {
+		model.addAttribute("directors", directorService.getAllDirectors());
+		return "admin-directors";
+	}
+
+	@GetMapping("/admin/add-director")
+	public String showAddDirectorForm(Model model) {
+		model.addAttribute("director", new Director());
+		return "add-director";
+	}
+
+	@PostMapping("/admin/add-director")
+	public String addDirector(@ModelAttribute Director director) {
+		directorService.saveDirector(director);
+		return "redirect:/admin/directors";
+	}
+
+	@GetMapping("/admin/edit-director/{id}")
+	public String showEditDirectorForm(@PathVariable Long id, Model model) {
+		Director director = directorService.getDirectorById(id)
+				.orElseThrow(() -> new RuntimeException("Director not found"));
+		model.addAttribute("director", director);
+		return "edit-director";
+	}
+
+	@PostMapping("/admin/edit-director/{id}")
+	public String editDirector(@PathVariable Long id, @ModelAttribute Director director) {
+		directorService.updateDirector(id, director);
+		return "redirect:/admin/directors";
+	}
+
+	@GetMapping("/admin/delete-director/{id}")
+	public String deleteDirector(@PathVariable Long id) {
+		directorService.deleteDirector(id);
+		return "redirect:/admin/directors";
+	}
+
 		
 }
