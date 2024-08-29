@@ -23,12 +23,12 @@ public class MovieTypeService {
     }
 
     public Optional<MovieType> getMovieTypeById(Long id) {
-        return movieTypeRepository.findById(id);
-    }
+		return movieTypeRepository.findById(id);
+	}
 
-    public MovieType saveMovieType(MovieType movieType) {
-        return movieTypeRepository.save(movieType);
-    }
+	public MovieType saveMovieType(MovieType movieType) {
+		return movieTypeRepository.save(movieType);
+	}
 
     public void deleteMovieType(Long id) {
         movieTypeRepository.deleteById(id);
@@ -42,3 +42,4 @@ public class MovieTypeService {
         return movieTypeRepository.save(movieType);
     }
 }
+	

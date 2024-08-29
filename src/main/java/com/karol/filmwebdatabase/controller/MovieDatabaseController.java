@@ -94,10 +94,33 @@ public class MovieDatabaseController {
     // Admin functionalities
 
     @GetMapping("/admin")
-    public String adminPage(Model model) {
-        model.addAttribute("movie", new Movie());
-        model.addAttribute("movies", movieService.getAllMovies());
-        return "admin";
+	public String adminPage(Model model) {
+		model.addAttribute("movie", new Movie());
+		model.addAttribute("movies", movieService.getAllMovies());
+		model.addAttribute("movieTypes", movieService.getAllMovieTypes());
+		return "admin";
+	}
+
+	@PostMapping("/admin/add-movie")
+    public String addMovie(@ModelAttribute Movie movie,
+                           @RequestParam("actorNames") List<String> actorNames,
+                           @RequestParam("directorName") String directorName,
+                           @RequestParam("movieTypeId") Long movieTypeId,
+                           @RequestParam(required = false) LocalDate directorBirthDate,
+                           @RequestParam(required = false) String directorNationality,
+                           @RequestParam(required = false) String directorBiography,
+                           @RequestParam(required = false) List<LocalDate> actorBirthDates,
+                           @RequestParam(required = false) List<String> actorNationalities,
+                           @RequestParam(required = false) List<String> actorBiographies) {
+
+        MovieType movieType = movieService.getMovieTypeById(movieTypeId)
+                .orElseThrow(() -> new RuntimeException("Movie Type not found"));
+        String typeName = movieType.getTypeName();
+
+        movieService.saveMovie(movie, actorNames, directorName, typeName,
+                directorBirthDate, directorNationality, directorBiography,
+                actorBirthDates, actorNationalities, actorBiographies);
+        return "redirect:/admin";
     }
 
     @GetMapping("/admin/edit-movie/{id}")
@@ -127,18 +150,7 @@ public class MovieDatabaseController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/add-movie")
-    public String showAddMovieForm(Model model) {
-        model.addAttribute("movie", new Movie());
-        model.addAttribute("movieTypes", movieService.getAllMovieTypes());
-        return "add-movie";
-    }
 
-    @PostMapping("/admin/add-movie")
-    public String addMovie(@ModelAttribute Movie movie) {
-        movieService.addMovie(movie);
-        return "redirect:/admin";
-    }
 
     @GetMapping("/admin/delete-movie/{id}")
     public String deleteMovie(@PathVariable Long id) {
@@ -222,5 +234,17 @@ public class MovieDatabaseController {
 		return "redirect:/admin/directors";
 	}
 
-		
+	@GetMapping("/admin/movie-types")
+    public String showMovieTypes(Model model) {
+        model.addAttribute("movieTypes", movieService.getAllMovieTypes());
+        model.addAttribute("newMovieType", new MovieType());
+        return "admin-movie-types";
+    }
+
+    @PostMapping("/admin/add-movie-type")
+    public String addMovieType(@ModelAttribute MovieType movieType) {
+        movieService.saveMovieType(movieType);
+        return "redirect:/admin/movie-types";
+    }
+
 }

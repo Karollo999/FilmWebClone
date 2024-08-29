@@ -4,96 +4,71 @@
     <title>Panel Administratora</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<a href="/admin/actors" class="btn btn-primary">Zarządzaj Aktorami</a>
-<a href="/admin/directors" class="btn btn-primary">Zarządzaj Reżyserami</a>
 <body>
     <div class="container mt-5">
-        <h2>Dodaj Nowy Film</h2>
-        <form action="#" th:action="@{/admin/save-movie}" th:object="${movie}" method="post">
+        <h2>Panel Administratora</h2>
+
+        <!-- Navigation Buttons -->
+        <div class="mb-4">
+            <a href="/admin/movie-types" class="btn btn-primary">Zarządzaj Typami Filmów</a>
+            <a href="/admin/actors" class="btn btn-primary">Zarządzaj Aktorami</a>
+            <a href="/admin/directors" class="btn btn-primary">Zarządzaj Reżyserami</a>
+        </div>
+
+        <h3>Dodaj Nowy Film</h3>
+        <form action="#" th:action="@{/admin/add-movie}" th:object="${movie}" method="post">
             <div class="form-group">
                 <label for="title">Tytuł:</label>
-                <input type="text" class="form-control" id="title" th:field="*{title}" placeholder="Wprowadź tytuł filmu"/>
+                <input type="text" class="form-control" id="title" th:field="*{title}" required>
             </div>
             <div class="form-group">
                 <label for="length">Długość (minuty):</label>
-                <input type="number" class="form-control" id="length" th:field="*{length}" placeholder="Wprowadź długość filmu"/>
+                <input type="number" class="form-control" id="length" th:field="*{length}" required>
             </div>
             <div class="form-group">
                 <label for="directorName">Reżyser:</label>
-                <input type="text" class="form-control" id="directorName" name="directorName">
-            </div>
-            <div class="form-group">
-                <label for="directorBirthDate">Data urodzenia reżysera:</label>
-                <input type="date" class="form-control" id="directorBirthDate" name="directorBirthDate">
-            </div>
-            <div class="form-group">
-                <label for="directorNationality">Narodowość reżysera:</label>
-                <input type="text" class="form-control" id="directorNationality" name="directorNationality">
-            </div>
-            <div class="form-group">
-                <label for="directorBiography">Biografia reżysera:</label>
-                <textarea class="form-control" id="directorBiography" name="directorBiography" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="typeName">Gatunek filmu:</label>
-                <input type="text" class="form-control" id="typeName" name="typeName">
+                <input type="text" class="form-control" id="directorName" name="directorName" required>
             </div>
             <div class="form-group">
                 <label for="actorNames">Aktorzy (oddzieleni przecinkami):</label>
-                <input type="text" class="form-control" id="actorNames" name="actorNames">
+                <input type="text" class="form-control" id="actorNames" name="actorNames" required>
             </div>
-            <div id="actorMetadata"></div>
-            <button type="button" class="btn btn-secondary mb-3" onclick="addActorMetadataFields()">Dodaj metadane aktora</button>
-            <button type="submit" class="btn btn-primary">Zapisz film</button>
+            <div class="form-group">
+                <label for="movieTypeId">Typ filmu:</label>
+                <select class="form-control" id="movieTypeId" name="movieTypeId" required>
+                    <option value="">-- Wybierz typ filmu --</option>
+                    <option th:each="type : ${movieTypes}" th:value="${type.id}" th:text="${type.typeName}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Dodaj Film</button>
         </form>
-        <hr/>
 
-        <h2>Edytuj Istniejące Filmy</h2>
+        <hr>
+
+        <h3>Lista Filmów</h3>
         <table class="table">
             <thead>
                 <tr>
                     <th>Tytuł</th>
+                    <th>Długość</th>
+                    <th>Reżyser</th>
+                    <th>Typ</th>
                     <th>Akcje</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="movie : ${movies}">
                     <td th:text="${movie.title}"></td>
+                    <td th:text="${movie.length}"></td>
+                    <td th:text="${movie.director != null ? movie.director.firstName + ' ' + movie.director.lastName : ''}"></td>
+                    <td th:text="${movie.movieType != null ? movie.movieType.typeName : ''}"></td>
                     <td>
-                        <a th:href="@{/admin/edit-movie/{id}(id=${movie.id})}" class="btn btn-warning btn-sm">Edytuj</a>
+                        <a th:href="@{/admin/edit-movie/{id}(id=${movie.id})}" class="btn btn-sm btn-warning">Edytuj</a>
+                        <a th:href="@{/admin/delete-movie/{id}(id=${movie.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć ten film?')">Usuń</a>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-
-    <script>
-    function addActorMetadataFields() {
-        const container = document.getElementById('actorMetadata');
-        const index = container.children.length / 3;
-
-        const birthDateInput = document.createElement('input');
-        birthDateInput.type = 'date';
-        birthDateInput.name = `actorBirthDates[${index}]`;
-        birthDateInput.className = 'form-control mt-2';
-        birthDateInput.placeholder = `Data urodzenia aktora ${index + 1}`;
-
-        const nationalityInput = document.createElement('input');
-        nationalityInput.type = 'text';
-        nationalityInput.name = `actorNationalities[${index}]`;
-        nationalityInput.className = 'form-control mt-2';
-        nationalityInput.placeholder = `Narodowość aktora ${index + 1}`;
-
-        const biographyTextarea = document.createElement('textarea');
-        biographyTextarea.name = `actorBiographies[${index}]`;
-        biographyTextarea.className = 'form-control mt-2 mb-3';
-        biographyTextarea.placeholder = `Biografia aktora ${index + 1}`;
-        biographyTextarea.rows = 3;
-
-        container.appendChild(birthDateInput);
-        container.appendChild(nationalityInput);
-        container.appendChild(biographyTextarea);
-    }
-    </script>
 </body>
 </html>

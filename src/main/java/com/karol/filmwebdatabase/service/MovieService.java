@@ -208,6 +208,13 @@ public class MovieService {
                     return actorRepository.save(newActor);
                 });
     }
-	
+
+    public Optional<MovieType> getMovieTypeById(Long id) {
+        return movieTypeRepository.findById(id);
+    }
+
+    public MovieType saveMovieType(MovieType movieType) {
+        return movieTypeRepository.save(movieType);
+    }
 	
 }

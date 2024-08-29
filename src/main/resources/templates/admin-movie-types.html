@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Zarządzanie Typami Filmów</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Zarządzanie Typami Filmów</h2>
+
+        <form action="#" th:action="@{/admin/add-movie-type}" th:object="${newMovieType}" method="post" class="mb-4">
+            <div class="form-group">
+                <label for="typeName">Nowy Typ Filmu:</label>
+                <input type="text" class="form-control" id="typeName" th:field="*{typeName}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Dodaj Typ Filmu</button>
+        </form>
+
+        <h3>Istniejące Typy Filmów</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nazwa</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="type : ${movieTypes}">
+                    <td th:text="${type.typeName}"></td>
+                    <td>
+                        <a th:href="@{/admin/edit-movie-type/{id}(id=${type.id})}" class="btn btn-sm btn-warning">Edytuj</a>
+                        <a th:href="@{/admin/delete-movie-type/{id}(id=${type.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć ten typ filmu?')">Usuń</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a href="/admin" class="btn btn-secondary">Powrót do Panelu Administratora</a>
+    </div>
+</body>
+</html>
