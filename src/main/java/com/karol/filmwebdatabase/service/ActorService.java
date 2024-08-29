@@ -26,23 +26,25 @@ public class ActorService {
         return actorRepository.findById(id);
     }
 
-    public Actor saveActor(Actor actor) {
-        return actorRepository.save(actor);
-    }
+
+	public Actor saveActor(Actor actor) {
+		return actorRepository.save(actor);
+	}
 
     public void deleteActor(Long id) {
         actorRepository.deleteById(id);
     }
 
-    public Actor updateActor(Long id, Actor actorDetails) {
-        Actor actor = actorRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Actor not found"));
+   public Actor updateActor(Long id, Actor actorDetails) {
+		Actor actor = actorRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Actor not found"));
 
-        actor.setFirstName(actorDetails.getFirstName());
-        actor.setLastName(actorDetails.getLastName());
-        actor.setBirthDate(actorDetails.getBirthDate());
-        actor.setMovies(actorDetails.getMovies());
+		actor.setFirstName(actorDetails.getFirstName());
+		actor.setLastName(actorDetails.getLastName());
+		actor.setBirthDate(actorDetails.getBirthDate());
+		actor.setNationality(actorDetails.getNationality());
+		actor.setBiography(actorDetails.getBiography());
 
-        return actorRepository.save(actor);
-    }
+		return actorRepository.save(actor);
+	}
 }

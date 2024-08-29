@@ -94,10 +94,33 @@ public class MovieDatabaseController {
     // Admin functionalities
 
     @GetMapping("/admin")
-    public String adminPage(Model model) {
-        model.addAttribute("movie", new Movie());
-        model.addAttribute("movies", movieService.getAllMovies());
-        return "admin";
+	public String adminPage(Model model) {
+		model.addAttribute("movie", new Movie());
+		model.addAttribute("movies", movieService.getAllMovies());
+		model.addAttribute("movieTypes", movieService.getAllMovieTypes());
+		return "admin";
+	}
+
+	@PostMapping("/admin/add-movie")
+    public String addMovie(@ModelAttribute Movie movie,
+                           @RequestParam("actorNames") List<String> actorNames,
+                           @RequestParam("directorName") String directorName,
+                           @RequestParam("movieTypeId") Long movieTypeId,
+                           @RequestParam(required = false) LocalDate directorBirthDate,
+                           @RequestParam(required = false) String directorNationality,
+                           @RequestParam(required = false) String directorBiography,
+                           @RequestParam(required = false) List<LocalDate> actorBirthDates,
+                           @RequestParam(required = false) List<String> actorNationalities,
+                           @RequestParam(required = false) List<String> actorBiographies) {
+
+        MovieType movieType = movieService.getMovieTypeById(movieTypeId)
+                .orElseThrow(() -> new RuntimeException("Movie Type not found"));
+        String typeName = movieType.getTypeName();
+
+        movieService.saveMovie(movie, actorNames, directorName, typeName,
+                directorBirthDate, directorNationality, directorBiography,
+                actorBirthDates, actorNationalities, actorBiographies);
+        return "redirect:/admin";
     }
 
     @GetMapping("/admin/edit-movie/{id}")
@@ -127,22 +150,101 @@ public class MovieDatabaseController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/add-movie")
-    public String showAddMovieForm(Model model) {
-        model.addAttribute("movie", new Movie());
-        model.addAttribute("movieTypes", movieService.getAllMovieTypes());
-        return "add-movie";
-    }
 
-    @PostMapping("/admin/add-movie")
-    public String addMovie(@ModelAttribute Movie movie) {
-        movieService.addMovie(movie);
-        return "redirect:/admin";
-    }
 
     @GetMapping("/admin/delete-movie/{id}")
     public String deleteMovie(@PathVariable Long id) {
         movieService.deleteMovie(id);
         return "redirect:/admin";
     }
+	
+	@GetMapping("/admin/actors")
+	public String showActorsList(Model model) {
+		model.addAttribute("actors", actorService.getAllActors());
+		return "admin-actors";
+	}
+
+	@GetMapping("/admin/add-actor")
+	public String showAddActorForm(Model model) {
+		model.addAttribute("actor", new Actor());
+		return "add-actor";
+	}
+
+	@PostMapping("/admin/add-actor")
+	public String addActor(@ModelAttribute Actor actor) {
+		actorService.saveActor(actor);
+		return "redirect:/admin/actors";
+	}
+	
+	@GetMapping("/admin/edit-actor/{id}")
+	public String showEditActorForm(@PathVariable Long id, Model model) {
+		Actor actor = actorService.getActorById(id)
+				.orElseThrow(() -> new RuntimeException("Actor not found"));
+		model.addAttribute("actor", actor);
+		return "edit-actor";
+	}
+
+	@PostMapping("/admin/edit-actor/{id}")
+	public String editActor(@PathVariable Long id, @ModelAttribute Actor actor) {
+		actorService.updateActor(id, actor);
+		return "redirect:/admin/actors";
+	}
+
+	@GetMapping("/admin/delete-actor/{id}")
+	public String deleteActor(@PathVariable Long id) {
+		actorService.deleteActor(id);
+		return "redirect:/admin/actors";
+	}
+	
+	@GetMapping("/admin/directors")
+	public String showDirectorsList(Model model) {
+		model.addAttribute("directors", directorService.getAllDirectors());
+		return "admin-directors";
+	}
+
+	@GetMapping("/admin/add-director")
+	public String showAddDirectorForm(Model model) {
+		model.addAttribute("director", new Director());
+		return "add-director";
+	}
+
+	@PostMapping("/admin/add-director")
+	public String addDirector(@ModelAttribute Director director) {
+		directorService.saveDirector(director);
+		return "redirect:/admin/directors";
+	}
+
+	@GetMapping("/admin/edit-director/{id}")
+	public String showEditDirectorForm(@PathVariable Long id, Model model) {
+		Director director = directorService.getDirectorById(id)
+				.orElseThrow(() -> new RuntimeException("Director not found"));
+		model.addAttribute("director", director);
+		return "edit-director";
+	}
+
+	@PostMapping("/admin/edit-director/{id}")
+	public String editDirector(@PathVariable Long id, @ModelAttribute Director director) {
+		directorService.updateDirector(id, director);
+		return "redirect:/admin/directors";
+	}
+
+	@GetMapping("/admin/delete-director/{id}")
+	public String deleteDirector(@PathVariable Long id) {
+		directorService.deleteDirector(id);
+		return "redirect:/admin/directors";
+	}
+
+	@GetMapping("/admin/movie-types")
+    public String showMovieTypes(Model model) {
+        model.addAttribute("movieTypes", movieService.getAllMovieTypes());
+        model.addAttribute("newMovieType", new MovieType());
+        return "admin-movie-types";
+    }
+
+    @PostMapping("/admin/add-movie-type")
+    public String addMovieType(@ModelAttribute MovieType movieType) {
+        movieService.saveMovieType(movieType);
+        return "redirect:/admin/movie-types";
+    }
+
 }

@@ -34,14 +34,17 @@ public class DirectorService {
         directorRepository.deleteById(id);
     }
 
-    public Director updateDirector(Long id, Director directorDetails) {
-        Director director = directorRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Director not found"));
+	public Director updateDirector(Long id, Director directorDetails) {
+		Director director = directorRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Director not found"));
 
-        director.setFirstName(directorDetails.getFirstName());
-        director.setLastName(directorDetails.getLastName());
-        director.setMovies(directorDetails.getMovies());
+		director.setFirstName(directorDetails.getFirstName());
+		director.setLastName(directorDetails.getLastName());
+		director.setBirthDate(directorDetails.getBirthDate());
+		director.setNationality(directorDetails.getNationality());
+		director.setBiography(directorDetails.getBiography());
 
-        return directorRepository.save(director);
-    }
+		return directorRepository.save(director);
+	}
+	
 }

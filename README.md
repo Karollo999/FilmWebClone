@@ -105,3 +105,84 @@ W panelu administratora możesz:
 1. Dodawać nowe filmy
 2. Edytować istniejące filmy wraz z Aktorami i reżyserami. 
 3. Usuwać filmy
+
+## Lista Endpointów
+
+### Publiczne Endpointy
+
+- `GET /` - Strona główna z listą filmów
+- `GET /search` - Strona wyszukiwania
+- `POST /search` - Wykonanie wyszukiwania
+- `GET /movie/{id}` - Szczegóły filmu
+- `GET /actor/{id}` - Szczegóły aktora
+- `GET /director/{id}` - Szczegóły reżysera
+
+### Endpointy Administratora
+
+- `GET /admin` - Panel administratora
+- `POST /admin/add-movie` - Dodanie nowego filmu
+- `GET /admin/edit-movie/{id}` - Formularz edycji filmu
+- `POST /admin/edit-movie/{id}` - Zapisanie zmian w filmie
+- `GET /admin/delete-movie/{id}` - Usunięcie filmu
+- `GET /admin/actors` - Lista aktorów
+- `POST /admin/add-actor` - Dodanie nowego aktora
+- `GET /admin/directors` - Lista reżyserów
+- `POST /admin/add-director` - Dodanie nowego reżysera
+- `GET /admin/movie-types` - Lista typów filmów
+- `POST /admin/add-movie-type` - Dodanie nowego typu filmu
+
+## Przykłady Zapytań cURL
+
+### Wyszukiwanie Filmów
+
+```bash
+curl -X POST http://localhost:8080/search \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "query=Inception&minLength=120&maxLength=180&genre=Sci-Fi"
+```
+
+### Dodawanie Nowego Filmu (Panel Administratora)
+
+```bash
+curl -X POST http://localhost:8080/admin/add-movie \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "title=Inception&length=148&directorName=Christopher Nolan&actorNames=Leonardo DiCaprio,Ellen Page&movieTypeId=1"
+```
+
+### Edycja Filmu (Panel Administratora)
+
+```bash
+curl -X POST http://localhost:8080/admin/edit-movie/1 \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "title=Inception (Extended)&length=170&directorName=Christopher Nolan&actorNames=Leonardo DiCaprio,Ellen Page,Tom Hardy&movieTypeId=1"
+```
+
+### Usuwanie Filmu (Panel Administratora)
+
+```bash
+curl -X GET http://localhost:8080/admin/delete-movie/1
+```
+
+### Dodawanie Nowego Aktora (Panel Administratora)
+
+```bash
+curl -X POST http://localhost:8080/admin/add-actor \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "firstName=Tom&lastName=Hardy&birthDate=1977-09-15"
+```
+
+### Dodawanie Nowego Reżysera (Panel Administratora)
+
+```bash
+curl -X POST http://localhost:8080/admin/add-director \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "firstName=Quentin&lastName=Tarantino&birthDate=1963-03-27"
+```
+
+### Dodawanie Nowego Typu Filmu (Panel Administratora)
+
+```bash
+curl -X POST http://localhost:8080/admin/add-movie-type \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "typeName=Thriller"
+```

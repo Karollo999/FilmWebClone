@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Panel Administratora - Reżyserzy</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Lista Reżyserów</h2>
+        <a href="/admin/add-director" class="btn btn-primary mb-3">Dodaj Nowego Reżysera</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Imię</th>
+                    <th>Nazwisko</th>
+                    <th>Data Urodzenia</th>
+                    <th>Narodowość</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="director : ${directors}">
+                    <td th:text="${director.firstName}"></td>
+                    <td th:text="${director.lastName}"></td>
+                    <td th:text="${#temporals.format(director.birthDate, 'dd-MM-yyyy')}"></td>
+                    <td th:text="${director.nationality}"></td>
+                    <td>
+                        <a th:href="@{/admin/edit-director/{id}(id=${director.id})}" class="btn btn-sm btn-warning">Edytuj</a>
+                        <a th:href="@{/admin/delete-director/{id}(id=${director.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć tego reżysera?')">Usuń</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="/admin" class="btn btn-secondary">Powrót do Panelu Administratora</a>
+    </div>
+</body>
+</html>
